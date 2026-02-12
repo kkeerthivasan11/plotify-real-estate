@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="buy-page">
+
+  <div class="buy-header">
+    <h1>Properties for Rent</h1>
+    <p>Find affordable rental homes in your preferred location</p>
+  </div>
+
+  <div class="buy-search">
+    <input type="text" placeholder="City or Area">
+    <select>
+      <option>Apartment</option>
+      <option>House</option>
+    </select>
+    <select>
+      <option>Any Budget</option>
+      <option>Below ₹15k</option>
+      <option>₹15k – ₹25k</option>
+      <option>Above ₹25k</option>
+    </select>
+    <button class="search-btn">Search</button>
+  </div>
+
+  <div class="property-grid">
+
+    {% if properties %}
+      {% for p in properties %}
+
+      <div class="property-card">
+
+        <div class="property-img">
+
+          {% if p.image %}
+            <img src="{{ url_for('static', filename='uploads/' + p.image) }}">
+          {% else %}
+            <img src="{{ url_for('static', filename='images/sample-house.jpg') }}">
+          {% endif %}
+
+          {% if p.verified %}
+            <span class="badge verified">✔ Verified</span>
+          {% else %}
+            <span class="badge unverified">⚠ Unverified</span>
+          {% endif %}
+
+          <button class="like-btn" onclick="toggleLike(this)">♡</button>
+        </div>
+
+        <div class="property-body">
+          <h3 class="price">{{ p.price }}</h3>
+          <p class="meta">{{ p.title }} · {{ p.area }}</p>
+          <p class="location">{{ p.location }}</p>
+        </div>
+
+        <div class="property-footer">
+          <a href="{{ url_for('rent.rent_details', id=p.id) }}"
+             class="view-btn">
+             View Details
+          </a>
+
+          <span class="posted">
+            {{ p.posted or "Recently Added" }}
+          </span>
+        </div>
+
+      </div>
+
+      {% endfor %}
+    {% else %}
+      <p>No rental properties available.</p>
+    {% endif %}
+
+  </div>
+
+</section>
+
+<script>
+  const loggedIn = {{ logged_in | default(False) | tojson }};
+
+  function toggleLike(btn) {
+    if (!loggedIn) {
+      alert("Please login to save properties");
+      return;
+    }
+
+    btn.classList.toggle("liked");
+    btn.textContent =
+      btn.classList.contains("liked") ? "♥" : "♡";
+  }
+</script>
+
+{% endblock %}

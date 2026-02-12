@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="buy-page">
+
+  <!-- HEADER -->
+  <div class="buy-header">
+    <h1>Commercial Properties</h1>
+    <p>Offices, shops, and commercial spaces for business growth</p>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="buy-search">
+    <input type="text" placeholder="City or Area">
+
+    <select>
+      <option>Office Space</option>
+      <option>Retail Shop</option>
+      <option>Warehouse</option>
+      <option>Commercial Building</option>
+    </select>
+
+    <select>
+      <option>Any Budget</option>
+      <option>Below ₹50k / month</option>
+      <option>₹50k – ₹1L</option>
+      <option>Above ₹1 Cr</option>
+    </select>
+
+    <button class="search-btn">Search</button>
+  </div>
+
+  <!-- GRID -->
+  <div class="property-grid">
+
+    {% if properties %}
+      {% for p in properties %}
+
+      <div class="property-card">
+
+        <div class="property-img">
+
+          {% if p.image %}
+            <img src="{{ url_for('static', filename='uploads/' + p.image) }}">
+          {% else %}
+            <img src="{{ url_for('static', filename='images/sample-house.jpg') }}">
+          {% endif %}
+
+          {% if p.verified %}
+            <span class="badge verified">✔ Verified</span>
+          {% else %}
+            <span class="badge unverified">⚠ Unverified</span>
+          {% endif %}
+
+          <button class="like-btn" onclick="toggleLike(this)">♡</button>
+        </div>
+
+        <div class="property-body">
+          <h3 class="price">{{ p.price }}</h3>
+          <p class="meta">{{ p.type }} · {{ p.area }}</p>
+          <p class="location">{{ p.location }}</p>
+        </div>
+
+        <div class="property-footer">
+          <a href="{{ url_for('commercial.commercial_details', id=p.id) }}"
+             class="view-btn">
+             View Details
+          </a>
+
+          <span class="posted">
+            {{ p.posted or "Recently Added" }}
+          </span>
+        </div>
+
+      </div>
+
+      {% endfor %}
+    {% else %}
+      <p>No commercial properties available.</p>
+    {% endif %}
+
+  </div>
+
+</section>
+
+<script>
+function toggleLike(btn) {
+  btn.classList.toggle("liked");
+  btn.textContent =
+    btn.classList.contains("liked") ? "♥" : "♡";
+}
+</script>
+
+{% endblock %}

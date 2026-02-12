@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plotify</title>
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+<header class="navbar">
+  <div class="container nav-inner">
+
+    <!-- LOGO -->
+    <a href="{{ url_for('home') }}" class="logo">
+      <img src="{{ url_for('static', filename='images/plotify-logo.png') }}" class="logo-img" alt="Plotify">
+
+    </a>
+
+    <!-- MENU -->
+    <nav class="nav-center">
+      <a href="{{ url_for('buy.buy') }}">Buy</a>
+      <a href="{{ url_for('rent.rent') }}">Rent</a>
+      <a href="{{ url_for('sell.sell_property') }}">Sell</a>
+      <a href="{{ url_for('commercial.commercial') }}">Commercial</a>
+      <a href="{{ url_for('agents.agents') }}">Agents</a>
+    </nav>
+
+    <!-- RIGHT SIDE -->
+    <div class="nav-right">
+      {% if session.get("user_name") %}
+        <span class="user-name">Hi, {{ session.get("user_name") }}</span>
+        <a href="{{ url_for('auth.logout') }}" class="logout-btn">Logout</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}" class="login-btn">Login</a>
+        <a href="{{ url_for('auth.signup') }}" class="signup-btn">Sign Up</a>
+      {% endif %}
+    </div>
+
+  </div>
+</header>
+
+
+<!-- ================= PAGE CONTENT ================= -->
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+  <div class="container footer-grid">
+
+    <!-- BRAND -->
+    <div class="footer-brand">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Plotify">
+      <p>
+        Plotify helps you discover, buy, sell, and rent verified properties
+        across Tamil Nadu and India with trust and transparency.
+      </p>
+
+      <!-- SOCIAL -->
+      <div class="footer-socials">
+        <a href="#" aria-label="Instagram">📸</a>
+        <a href="#" aria-label="Facebook">📘</a>
+        <a href="#" aria-label="LinkedIn">💼</a>
+        <a href="#" aria-label="Twitter">🐦</a>
+      </div>
+    </div>
+
+    <!-- EXPLORE -->
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <a href="/buy">Buy</a>
+      <a href="/rent">Rent</a>
+      <a href="/sell">Sell</a>
+      <a href="/agents">Agents</a>
+    </div>
+
+    <!-- COMPANY -->
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About Us</a>
+      <a href="#">Careers</a>
+      <a href="#">Contact</a>
+      <a href="#">Privacy Policy</a>
+      <a href="/admin" class="footer-admin">Admin Login</a>
+
+    </div>
+
+    <!-- CONTACT -->
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <p>📍 Chennai, Tamil Nadu, India</p>
+      <p>📞 +91 98765 43210</p>
+      <p>✉️ support@plotify.in</p>
+    </div>
+
+  </div>
+
+  <!-- COPYRIGHT -->
+  <div class="footer-bottom">
+    © 2026 Plotify. All rights reserved.
+  </div>
+</footer>
+
+
+
+<!-- ================= GLOBAL JS ================= -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* HERO TAB ACTIVE STATE */
+  document.querySelectorAll(".hero-tabs span").forEach(tab => {
+    tab.addEventListener("click", () => {
+      document.querySelector(".hero-tabs .active")?.classList.remove("active");
+      tab.classList.add("active");
+    });
+  });
+
+  
+
+  /* HERO BACKGROUND SLIDER */
+  const hero = document.querySelector(".hero");
+  if (hero) {
+    const images = [
+      "/static/images/hero1.png",
+      "/static/images/hero2.png",
+      "/static/images/hero3.png"
+    ];
+
+    let index = 0;
+    hero.style.backgroundImage = `url('${images[0]}')`;
+
+    setInterval(() => {
+      index = (index + 1) % images.length;
+      hero.style.backgroundImage = `url('${images[index]}')`;
+    }, 5000);
+  }
+
+  
+
+});
+
+const isLoggedIn = false; // later from session
+
+document.querySelectorAll(".wishlist").forEach(icon => {
+  icon.addEventListener("click", () => {
+    if (!isLoggedIn) {
+      alert("Login to save properties");
+      return;
+    }
+    icon.classList.toggle("active");
+  });
+});
+
+</script>
+
+</body>
+</html>

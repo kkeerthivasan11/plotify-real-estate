@@ -1,0 +1,287 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section class="hero" style="background-image:url('{{ url_for('static', filename='images/hero-home.jpg') }}')">
+  <div class="hero-overlay">
+    <div class="hero-content">
+
+      <h1 >Find Your Perfect Property with Confidence</h1>
+      <p class="hero-sub">
+        Verified homes, trusted agents, and secure listings across India
+      </p>
+
+      <!-- HERO TABS -->
+      <div class="hero-tabs">
+        <a href="/buy" class="active">Buy</a>
+        <a href="/rent">Rent</a>
+        <a href="/sell">Sell</a>
+
+      </div>
+
+      <!-- SEARCH -->
+     <form action="/buy" method="GET" class="search-box">
+  <input name="location" placeholder="Search city">
+  <button type="submit">🔍</button>
+    </form>
+
+
+    <div class="hero-trust">
+  <span>✔ Admin-Verified Properties</span>
+  <span>✔ Genuine Owners & Agents</span>
+  <span>✔ Secure Listings Across India</span>
+</div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= AREA STATS ================= -->
+<section class="area-stats">
+  <div class="container">
+    <h2 class="area-title">What’s Happening in Your Area</h2>
+    <p class="area-desc">
+      Whether you're searching for a home, investment, or just exploring,
+      we help you find what fits you best.
+    </p>
+    <p class="area-location">Chennai, Tamil Nadu</p>
+
+   <div class="stats-grid">
+
+  <div class="stat-card">
+    <h3 data-value="165">0</h3>
+    <p>Homes For Rent</p>
+  </div>
+
+  <div class="stat-card">
+    <h3 data-value="416">0</h3>
+    <p>Homes For Sale</p>
+  </div>
+
+  <div class="stat-card">
+    <h3 data-value="740">0</h3>
+    <p>Agents</p>
+  </div>
+
+  <div class="stat-card">
+    <h3 data-value="251">0</h3>
+    <p>Apartments</p>
+  </div>
+
+</div>
+
+  </div>
+</section>
+
+<!-- ================= PROPERTIES ================= -->
+<section class="property-section">
+  <div class="container">
+
+    <h2 class="section-title">Explore Properties by Category</h2>
+
+    <div class="help-tabs">
+      <button class="help-tab active" data-filter="all">🏠 All</button>
+      <button class="help-tab" data-filter="house">🏡 House</button>
+      <button class="help-tab" data-filter="apartment">🏢 Apartment</button>
+      <button class="help-tab" data-filter="villa">🏘 Villa</button>
+      <button class="help-tab" data-filter="commercial">🏬 Commercial</button>
+      <button class="help-tab" data-filter="farm">🚜 Farm House</button>
+      <button class="help-tab" data-filter="beach">🏖 Beach House</button>
+    </div>
+
+    <div class="property-grid">
+
+      {% for p in properties %}
+      <div class="property-card"
+           data-category="{% if 'house' in p.type|lower %}house{% elif 'apartment' in p.type|lower %}apartment{% elif 'villa' in p.type|lower %}villa{% elif 'commercial' in p.type|lower %}commercial{% elif 'farm' in p.type|lower %}farm{% elif 'beach' in p.type|lower %}beach{% else %}other{% endif %}">
+
+        <div class="property-img">
+  <img src="{{ url_for('static', filename='uploads/' + (p.image or 'sample-house.jpg')) }}" alt="property">
+
+  {% if p.verified %}
+    <span class="badge verified">✔ Verified</span>
+  {% else %}
+    <span class="badge unverified">⚠ Unverified</span>
+  {% endif %}
+
+  <button class="like-btn">♡</button>
+</div>
+        <div class="property-body">
+          <h3 class="price">{{ p.price }}</h3>
+          <p class="meta">{{ p.title }} · {{ p.area }}</p>
+          <p class="location">{{ p.location }}</p>
+        </div>
+
+        <div class="property-footer">
+          <a href="{{ url_for('buy.property_details', id=p.id) }}" class="details-btn">
+            View Details
+          </a>
+          <span class="posted">Posted {{ p.posted }}</span>
+        </div>
+
+      </div>
+      {% endfor %}
+
+    </div>
+
+    <a href="{{ url_for('buy.buy') }}" class="view-btn" style="margin-top:20px; display:inline-block">
+      Explore All Properties →
+    </a>
+
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="testimonial-section">
+  <div class="container">
+    <h2 class="section-title">What Our Customers Say</h2>
+
+    <div class="testimonial-slider">
+      <div class="testimonial-track">
+
+        <!-- 8 TESTIMONIAL CARDS -->
+
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>"Found my dream home in just 2 weeks. Smooth experience."</p>
+          <h4>Arun Kumar</h4>
+          <span>Chennai</span>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>"Very genuine buyers. Sold property faster than expected."</p>
+          <h4>Priya N</h4>
+          <span>Coimbatore</span>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>"Clean UI and verified listings. Loved the experience."</p>
+          <h4>Rakesh S</h4>
+          <span>Madurai</span>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="stars">★★★★☆</div>
+          <p>"Agents were supportive and process was simple."</p>
+          <h4>Deepak</h4>
+          <span>Trichy</span>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>"Best real estate platform I’ve used so far."</p>
+          <h4>Karthik</h4>
+          <span>Salem</span>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>"Quick responses and trusted listings."</p>
+          <h4>Vignesh</h4>
+          <span>Erode</span>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="stars">★★★★☆</div>
+          <p>"Very smooth experience from search to purchase."</p>
+          <h4>Sanjay</h4>
+          <span>Chennai</span>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>"Highly recommended for buying and selling."</p>
+          <h4>Meena</h4>
+          <span>Coimbatore</span>
+        </div>
+
+        <!-- DUPLICATE SAME 8 AGAIN FOR CONTINUOUS FLOW -->
+
+        <!-- copy same 8 cards again below -->
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= JS ================= -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* =====================
+     STATS COUNT ANIMATION
+  ===================== */
+  const statCards = document.querySelectorAll(".stat-card");
+  let started = false;
+
+  const animateStats = () => {
+    if (started) return;
+    started = true;
+
+    statCards.forEach((card, index) => {
+      const number = card.querySelector("h3");
+      const target = +number.dataset.value;
+      let count = 0;
+
+      setTimeout(() => {
+        card.classList.add("animate");
+
+        const increment = target / 60;
+        const updateCount = () => {
+          count += increment;
+          if (count < target) {
+            number.innerText = Math.ceil(count);
+            requestAnimationFrame(updateCount);
+          } else {
+            number.innerText = target;
+          }
+        };
+        updateCount();
+      }, index * 150);
+    });
+  };
+
+  const statsSection = document.querySelector(".area-stats");
+  if (statsSection) {
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) animateStats();
+    }, { threshold: 0.3 });
+
+    observer.observe(statsSection);
+  }
+
+  // PROPERTY FILTER
+  const tabs = document.querySelectorAll(".help-tab");
+  const cards = document.querySelectorAll(".property-card");
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+
+      tabs.forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+
+      const filter = tab.dataset.filter.trim().toLowerCase();
+
+      cards.forEach(card => {
+        const category = card.dataset.category.trim().toLowerCase();
+
+        if (filter === "all" || category.includes(filter)) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+    });
+  });
+
+});
+
+</script>
+
+
+{% endblock %}

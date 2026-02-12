@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="buy-page">
+
+  <!-- HEADER -->
+  <div class="buy-header">
+    <h1>Buy Properties</h1>
+    <p>Explore verified homes, apartments, and lands across India</p>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="buy-search">
+    <input type="text" placeholder="City or Area">
+    <select>
+      <option>House</option>
+      <option>Apartment</option>
+      <option>Land</option>
+    </select>
+    <select>
+      <option>Any Budget</option>
+      <option>Below ₹50L</option>
+      <option>₹50L – ₹1Cr</option>
+      <option>Above ₹1Cr</option>
+    </select>
+    <button class="search-btn">Search</button>
+  </div>
+
+  <!-- PROPERTY GRID -->
+  <div class="property-grid">
+
+    {% for p in properties %}
+    <div class="property-card">
+
+      <div class="property-img">
+        {% if p.image %}
+      <img src="{{ url_for('static', filename='uploads/' + p.image) }}">
+      {% else %}
+      <img src="{{ url_for('static', filename='images/sample-house.jpg') }}">
+      {% endif %}
+
+        {% if p.verified %}
+          <span class="badge verified">✔ Verified</span>
+        {% else %}
+          <span class="badge unverified">⚠ Unverified</span>
+        {% endif %}
+
+        <button class="like-btn" onclick="toggleLike(this)">
+          ♡
+        </button>
+      </div>
+
+      <div class="property-body">
+        <h3 class="price">{{ p.price }}</h3>
+        <p class="meta">{{ p.title }} · {{ p.area }}</p>
+        <p class="location">{{ p.location }}</p>
+      </div>
+
+      <div class="property-footer">
+        <a href="{{ url_for('buy.property_details', id=p.id) }}" class="details-btn">
+          View Details
+        </a>
+        <span class="posted">Posted {{ p.posted }}</span>
+      </div>
+
+    </div>
+    {% endfor %}
+
+  </div>
+</section>
+
+<script>
+  const loggedIn = false;
+
+  function toggleLike(btn) {
+    if (!loggedIn) {
+      alert("Please login to save properties");
+      return;
+    }
+    btn.classList.toggle("liked");
+    btn.textContent = btn.classList.contains("liked") ? "♥" : "♡";
+  }
+</script>
+
+
+
+{% endblock %}

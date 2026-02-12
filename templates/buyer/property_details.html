@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="property-page">
+
+  <div class="property-layout">
+
+    <!-- LEFT CONTENT -->
+    <div class="property-main">
+
+      <!-- IMAGE -->
+      <div class="details-image">
+        {% if property.image %}
+          <img src="{{ url_for('static', filename='uploads/' + property.image) }}">
+        {% else %}
+          <img src="{{ url_for('static', filename='images/sample-house.jpg') }}">
+        {% endif %}
+
+        {% if property.verified %}
+          <span class="badge verified">✔ Verified</span>
+        {% else %}
+          <span class="badge unverified">⚠ Unverified</span>
+        {% endif %}
+      </div>
+
+      <!-- PROPERTY HEADER -->
+      <div class="property-header">
+
+        <h2 class="details-price">
+          {{ property.price or "Price not available" }}
+        </h2>
+
+        <p class="details-meta">
+          {{ property.title or "Property" }}
+          · {{ property.area or "N/A" }}
+        </p>
+
+        <p class="posted-date">
+          Posted {{ property.posted or "Recently Added" }}
+        </p>
+
+        <p class="details-location">
+          📍 {{ property.location or "Location not specified" }}
+        </p>
+
+        <div class="highlights">
+          <div>🏠 {{ property.title }}</div>
+          <div>📐 {{ property.area }}</div>
+        </div>
+
+      </div>
+
+      <!-- SPECIFICATIONS -->
+      <div class="property-specs">
+
+        {% if property.bedrooms %}
+        <div>
+          <span>Bedrooms</span>
+          <strong>{{ property.bedrooms }}</strong>
+        </div>
+        {% endif %}
+
+        {% if property.bathrooms %}
+        <div>
+          <span>Bathrooms</span>
+          <strong>{{ property.bathrooms }}</strong>
+        </div>
+        {% endif %}
+
+        {% if property.area %}
+        <div>
+          <span>Area</span>
+          <strong>{{ property.area }}</strong>
+        </div>
+        {% endif %}
+
+        {% if property.type %}
+        <div>
+          <span>Type</span>
+          <strong>{{ property.type }}</strong>
+        </div>
+        {% endif %}
+
+        <div>
+          <span>Status</span>
+          <strong>{{ property.status or "Ready to Move" }}</strong>
+        </div>
+
+      </div>
+
+      <!-- DESCRIPTION -->
+      <div class="details-section">
+        <h3>Property Description</h3>
+        <p>{{ property.description or "No description available" }}</p>
+      </div>
+
+      <!-- AMENITIES -->
+      <div class="amenities">
+        <h3>Amenities</h3>
+
+        {% if property.amenities %}
+          <ul>
+            {% for amenity in property.amenities.split(',') %}
+              <li>{{ amenity }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No amenities listed</p>
+        {% endif %}
+      </div>
+
+      <!-- LOCATION MAP -->
+      <div class="map-section">
+        <h3>Location</h3>
+
+        {% if property.location %}
+        <iframe
+          src="https://maps.google.com/maps?q={{ property.location }}&t=&z=13&ie=UTF8&iwloc=&output=embed">
+        </iframe>
+        {% endif %}
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <aside class="property-sidebar">
+
+      <h3>Owner Details</h3>
+
+      <p class="owner-name">
+        <strong>{{ property.owner_name or "Owner" }}</strong>
+      </p>
+
+      {% if property.verified %}
+        <p class="verified-text">✔ Verified Owner</p>
+      {% else %}
+        <p class="verified-text">⚠ Unverified Owner</p>
+      {% endif %}
+
+      {% if property.phone %}
+        <p class="owner-contact">📞 {{ property.phone }}</p>
+        <a href="tel:{{ property.phone }}" class="contact-btn">
+          📞 Contact Owner
+        </a>
+      {% endif %}
+
+      {% if property.email %}
+        <p class="owner-contact">✉️ {{ property.email }}</p>
+      {% endif %}
+
+    </aside>
+
+  </div>
+
+</section>
+
+{% endblock %}
